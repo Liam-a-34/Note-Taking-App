@@ -1,23 +1,14 @@
 const express = require('express');
-const fs = require('fs');
-const uniqid = require('uniqid');
-
-const htmlRoutes = require('./routes/htmlRoutes');
-const apiRoutes = require('./routes/apiRoutes');
-const notes = require('./db/db.json');
-
-const PORT = process.env.PORT || 3001;
 
 const app = express();
-
+const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
+app.use(express.urlencoded({ extended: true}));
 app.use(express.static('public'));
 
-app.use('/', htmlRoutes);
-app.use('/api', apiRoutes);
+require('./routes/apiRoutes')(app);
+require('./routes/htmlRoutes')(app);
 
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT} 🚀`)
